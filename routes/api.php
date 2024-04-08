@@ -26,6 +26,7 @@ Route::middleware(['api.token', CorsMiddleware::class])->group(function() {
     Route::get("/users", [UserController::class, 'getAll']);
     Route::post("/register", [AuthController::class, 'register']);
     Route::post("/login", [AuthController::class, 'login']);
+    Route::get("/students", [UserController::class,'getStudents']);
 });
 
 

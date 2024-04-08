@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getAll() {
-        return response()->json(User::all());
+    public function getStudents() {
+        return response()->json(User::where('id', '<>', 1)->get());
     }
 }

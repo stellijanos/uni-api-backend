@@ -18,6 +18,7 @@ class AuthController extends Controller
         // {"firstname":"Janos","lastname":"Stelli","email":"janos@stellijanos.com","birthDate":"2024-04-10","password":"123","confirmPassword":"123"}
 
 
+        
         // request()->validate([
         //     'firstname' => 'required|string|max:64',
         //     'lastname' => 'required|string|max:64',
@@ -67,10 +68,12 @@ class AuthController extends Controller
             return response()->json(['response' => 'Incorrect Password']);
         }
 
-        return response()->json([
-            'response' => 'success',
-            'login_token' => $user->login_token
-        ], 200);
+        if(auth()->attempt(request()->only('email', 'password'))) {
+            return response()->json([
+                'response' => 'success',
+                'login_token' => $user->login_token
+            ], 200);
+        }
+        return response()->json(['response' => 'Invalid Credentials']);
     }
 }
-
