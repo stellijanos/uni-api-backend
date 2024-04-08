@@ -68,3 +68,4 @@ class Kernel extends HttpKernel
         'api.token' => \App\Http\Middleware\APITokenMiddleware::class
     ];
 }
+

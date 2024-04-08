@@ -25,7 +25,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['api.token', CorsMiddleware::class])->group(function() {
     Route::get("/users", [UserController::class, 'getAll']);
     Route::post("/register", [AuthController::class, 'register']);
+    Route::post("/login", [AuthController::class, 'login']);
 });
+
 
 
 // Route::middleware([ CorsMiddleware::class])->group(function() {

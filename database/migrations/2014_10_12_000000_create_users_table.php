@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('birthDate');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('login_token', 64)->default(Str::random(64));
+            $table->string('login_token', 64);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,3 +37,4 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
+

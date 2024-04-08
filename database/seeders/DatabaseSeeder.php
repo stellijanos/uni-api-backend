@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,7 +23,9 @@ class DatabaseSeeder extends Seeder
             'lastname' => 'Stelli',
             'email' => 'janos@stellijanos.com',
             'birthDate' => '2003-12-23',
-            'password' => Hash::make('123')
+            'password' => Hash::make('123'),
+            'login_token' => Str::random(64)
         ]);
     }
 }
+
