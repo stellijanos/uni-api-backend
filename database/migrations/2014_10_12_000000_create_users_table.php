@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('login_token', 64);
+            $table->string('logged_in',3)->default("NO");
             $table->rememberToken();
             $table->timestamps();
         });

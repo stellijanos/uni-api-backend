@@ -56,8 +56,8 @@ class AuthController extends Controller
 
     public function login() {
 
-        $email = request()->get('email') ?? '';
-        $password = request()->get('password') ?? '';
+        $email = filter_var(request()->get('email'), FILTER_SANITIZE_EMAIL) ?? '';
+        $password = filter_var(request()->get('password'), FILTER_SANITIZE_STRING) ?? '';
 
         $user = User::where('email', $email)->first();
 
@@ -68,12 +68,27 @@ class AuthController extends Controller
             return response()->json(['response' => 'Incorrect Password']);
         }
 
-        if(auth()->attempt(request()->only('email', 'password'))) {
+        $user->logged_in = "YES";
+        $user->save();
+        return response()->json([
+            'response' => 'success',
+            'login_token' => $user->login_token
+        ], 200);
+    }
+
+    public function isloggedIn($token) {
+        $user = User::where('login_token', $token)->first();
+
+        if (!$user) {
             return response()->json([
-                'response' => 'success',
-                'login_token' => $user->login_token
-            ], 200);
-        }
-        return response()->json(['response' => 'Invalid Credentials']);
+                'is_logged_in' => "NO",
+                'role' => "NO"
+            ]);
+        } 
+        $role = ($user->email === env('ADMIN_EMAIL')) ? "ADMIN" : "STUDENT" ;
+        return response()->json([
+            'is_logged_in' => $user->logged_in,
+            'role' => $role
+        ]);
     }
 }

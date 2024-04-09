@@ -28,6 +28,7 @@ Route::middleware(['api.token', CorsMiddleware::class])->group(function() {
     Route::post("/login", [AuthController::class, 'login']);
     Route::get("/students", [UserController::class,'getStudents']);
     Route::delete("/student/{id}", [UserController::class,'deleteStudent']);
+    Route::post("/logged_in/{token}", [AuthController::class, 'isloggedIn']);
 });
 
 
