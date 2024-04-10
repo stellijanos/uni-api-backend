@@ -36,7 +36,8 @@ class UserController extends Controller
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
             'email' => $user->email,
-            'birthDate' => $user->birthDate
+            'birthDate' => $user->birthDate,
+            'grade' => $user->grade
         ]);
     }
 

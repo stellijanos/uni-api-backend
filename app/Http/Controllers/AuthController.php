@@ -39,6 +39,9 @@ class AuthController extends Controller
             return response()->json(['response' => 'User already exists!']);
         }
 
+        $random_float = mt_rand(500, 1000) / 100;
+        $grade = number_format($random_float, 2);
+
         $user = new User();
 
         $user->firstname = filter_var(request()->get('firstname'), FILTER_SANITIZE_STRING);
@@ -47,6 +50,7 @@ class AuthController extends Controller
         $user->birthDate = request()->get('birthDate');
         $user->password = Hash::make(request()->get('password'));
         $user->login_token = Str::random(64);
+        $user->grade = $grade;
 
         $user->save();
         return response()->json(['response' => 'success']);

@@ -17,6 +17,18 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+
+        $start_date = strtotime('2000-01-01');
+        $end_date = strtotime('2005-12-31');
+
+        // Generate a random timestamp within the range
+        $random_timestamp = rand($start_date, $end_date);
+
+        // Convert the timestamp to a date string
+        $random_date = date('Y-m-d', $random_timestamp);
+        $random_float = mt_rand(500, 1000) / 100;
+        $grade = number_format($random_float, 2);
+
         return [
             'firstname' => fake()->firstName(),
             'lastname' => fake()->lastName(),
@@ -24,8 +36,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'birthDate' => '2003-12-23',
-            'login_token' => Str::random(64)
+            'birthDate' => $random_date,
+            'login_token' => Str::random(64),
+            'grade' => $grade
         ];
     }
 
