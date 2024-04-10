@@ -31,6 +31,7 @@ Route::middleware(['api.token', CorsMiddleware::class])->group(function() {
     Route::post("/logged_in/{token}", [AuthController::class, 'isloggedIn']);
     Route::get("/user/{token}", [UserController::class, "getProfile"]);
     Route::put("/user/{token}", [UserController::class, "saveProfile"]);
+    Route::get("logout/{token}", [AuthController::class, "logout"]);
 });
 
 

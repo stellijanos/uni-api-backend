@@ -91,4 +91,19 @@ class AuthController extends Controller
             'role' => $role
         ]);
     }
+
+
+    public function logout($token) {
+        $user = User::where('login_token', $token)->first();
+
+        if ($user) {
+            $user->logged_in = "NO";
+            $user->save();
+        } 
+       
+        return response()->json([
+            'response' => "success",
+        ]);
+    }
+
 }
