@@ -24,21 +24,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['api.token', CorsMiddleware::class])->group(function() {
     Route::get("/users", [UserController::class, 'getAll']);
+
     Route::post("/register", [AuthController::class, 'register']);
     Route::post("/login", [AuthController::class, 'login']);
-    Route::get("/students", [UserController::class,'getStudents']);
-    Route::delete("/student/{id}", [UserController::class,'deleteStudent']);
+    Route::get("logout/{token}", [AuthController::class, "logout"]);
     Route::post("/logged_in/{token}", [AuthController::class, 'isloggedIn']);
+
+    Route::get("/students", [UserController::class,'getStudents']);
+    Route::get("/students/grades", [UserController::class, 'getGrades']);
+    Route::delete("/student/{id}", [UserController::class,'deleteStudent']);
+
     Route::get("/user/{token}", [UserController::class, "getProfile"]);
     Route::put("/user/{token}", [UserController::class, "saveProfile"]);
-    Route::get("logout/{token}", [AuthController::class, "logout"]);
 });
-
-
-
-// Route::middleware([ CorsMiddleware::class])->group(function() {
-//     Route::get("/users", [UserController::class, 'getAll']);
-//     Route::post("/register", [AuthController::class, 'register']);
-// });
 
 

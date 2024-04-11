@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -22,6 +23,14 @@ class UserController extends Controller
         return response()->json(['message' => 'Student deleted successfully'], 200);
     }
 
+    private function getStudentRankings() {
+        return User::select('id')
+                        ->where('grade', '<>', 0)
+                        ->orderBy('grade', 'desc')
+                        ->pluck('id')
+                        ->toArray();
+    }
+
     public function getProfile($token) {
         $user = User::where('login_token', $token)->first();
 
@@ -31,15 +40,29 @@ class UserController extends Controller
             ]);
         }
 
+        $grades = $this->getStudentRankings();
+
+        $index = array_search($user->id, $grades);
+
+        if ($index !== false) {
+            $ranking = $index + 1;
+        } else {
+            $ranking = -1;
+        }
+
         return response()->json([
             'response' => 'success',
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
             'email' => $user->email,
             'birthDate' => $user->birthDate,
-            'grade' => $user->grade
+            'grade' => $user->grade,
+            'ranking' => $ranking,
+            'total' => count($grades)
         ]);
     }
+
+
 
     public function saveProfile($token) {
         $user = User::where('login_token', $token)->first();
@@ -55,6 +78,7 @@ class UserController extends Controller
             ]);
         }
 
+
         $user->firstname = filter_var(request()->get('firstname'), FILTER_SANITIZE_STRING);
         $user->lastname = filter_var(request()->get('lastname'), FILTER_SANITIZE_STRING);
         $user->email = filter_var(request()->get('email'), FILTER_SANITIZE_STRING);
@@ -66,4 +90,26 @@ class UserController extends Controller
         ]);
     }
 
+    // select grades, count(grades) as nr from users where grades <>0, group by grade
+
+    public function getGrades() {
+
+        $grades = User::select('grade')->where('grade', '<>', 0)->pluck('grade')->toArray();
+ 
+        $data = [
+            5 => 0,
+            6 => 0,
+            7 => 0,
+            8 => 0,
+            9 => 0,
+            10 => 0
+        ];
+
+        foreach($grades as $grade) {
+            $data[floor($grade)] += 1;
+        }
+
+        return response()->json($data);
+    }
 }
+
